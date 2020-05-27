@@ -442,6 +442,9 @@ class Session(Fixture):
         self.local.changed = True
         self.local.data[key] = value
 
+    def was_modified(self):
+        self.local.changed = True
+
     def keys(self):
         return self.local.data.keys()
 
@@ -1035,7 +1038,7 @@ def install_args(args, reinstall_apps=False):
     apps_folder = args['apps_folder']
     yes = args.get('yes', 'N')
     # If the apps folder does not exist create it and populate it
-    if not os.path.exists(apps_folder):        
+    if not os.path.exists(apps_folder):
         if yes or click.confirm('Create missing folder %s?' % apps_folder):
             os.makedirs(apps_folder)
             init_py = os.path.join(apps_folder, "__init__.py")
@@ -1158,9 +1161,9 @@ def set_password(password, password_file):
 @click.option('--ssl_key', help='SSL key file for HTTPS')
 def run(**args):
     install_args(args)
-    apps_folder = args['apps_folder']    
+    apps_folder = args['apps_folder']
     yes = args['yes']
-    
+
     from py4web import __version__
     click.echo(ART, color='blue')
     click.echo("Py4web: %s on Python %s\n\n" % (__version__, sys.version))

@@ -1,7 +1,7 @@
 (function(){
 
     var starrater = {
-        props: ['url', 'callback_url'],
+        props: ['starrater_id'],
         data: null,
         methods: {}
     };
@@ -11,8 +11,9 @@
             num_stars_display: 0,
             num_stars_assigned: 0,
             star_indices: [1, 2, 3, 4, 5],
-            get_url: this.url,
-            set_url: this.callback_url,
+            id: this.starrater_id,
+            get_url: starrater_urls.get_url,
+            set_url: starrater_urls.set_url,
         };
         starrater.methods.load.call(data);
         return data;
@@ -36,14 +37,17 @@
         let self = this;
         self.num_stars_assigned = star_idx;
         axios.get(self.set_url,
-            {params: {num_stars: self.num_stars_assigned}});
+            {params: {
+                    num_stars: self.num_stars_assigned,
+                    id: self.id,
+                }});
     };
 
     starrater.methods.load = function () {
         // In use, self will correspond to the data of the table,
         // as this is called via grid.methods.load
         let self = this;
-        axios.get(self.get_url)
+        axios.get(self.get_url, {params: {id: self.id}})
             .then(function(res) {
                 self.num_stars_assigned = res.data.num_stars;
                 self.num_stars_display = res.data.num_stars;
