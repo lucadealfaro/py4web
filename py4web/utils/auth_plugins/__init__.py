@@ -141,8 +141,8 @@ class OAuth2(SSO):
         statecheck = query.get("state")
         if not code:
             return False
-        if statecheck != self.parameters.get("passed_state"):
-            return False
+        # if statecheck != self.parameters.get("passed_state"):
+        #     return False
         data = dict(
             code=code,
             client_id=self.parameters.get("client_id"),
@@ -154,7 +154,10 @@ class OAuth2(SSO):
             grant_type="authorization_code",
         )
         res = requests.post(self.token_url, data=data)
+        print("res json:", res.json())
         token = res.json().get("access_token")
+        print("data:", data)
+        print("token:", token)
         headers = {"Authorization": "Bearer %s" % token}
         # Lets not get the  user attributes via the userinfo endpoint
         # but lets take the userinfo directly extracted from the token
