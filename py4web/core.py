@@ -333,11 +333,11 @@ ICECUBE = {}
 class Flash(Fixture):
     """
     flash = Flash(session)
-    
+
     #acton('index.html')
     @action.uses(flash)
     def index():
-        flash.set('hello', class_='important')        
+        flash.set('hello', class_='important')
         return dict()
 
     Flash messages are added to the dict and, upon redirect, carry forward
@@ -752,8 +752,12 @@ class action:
         if not func in self.registered:
             func = action.catch_errors(app_name, func)
         func = bottle.route(path, **self.kwargs)(func)
-        if path.endswith("/index"):  # /index is always optional
-            func = bottle.route(path[:-6] or "/", **self.kwargs)(func)
+        # /index is always optional
+        if path == "/index":
+            func = bottle.route("/", **self.kwargs)(func)
+        elif path.endswith("/index"):
+            func = bottle.route(path[:-5], **self.kwargs)(func)
+            func = bottle.route(path[:-6], **self.kwargs)(func)
         self.registered.add(func)
         return func
 
