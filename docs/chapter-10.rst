@@ -71,6 +71,7 @@ Helpers can also be serialized into strings, equivalently, with the
    >>> print DIV("hello world").xml()
    <div>hello world</div>
 
+To use helpers in Python code, you import them from `yatl.helpers`. 
 The helpers mechanism in py4web is more than a system to generate HTML
 without concatenating strings. It provides a server-side representation
 of the Document Object Model (DOM).
